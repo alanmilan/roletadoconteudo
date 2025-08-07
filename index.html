@@ -156,9 +156,9 @@
       text-decoration: underline;
     }
     .logo-roleta {
-      width: 250px;
+      width: 200px;
       margin-bottom: 25px;
-      margin-top: -45px;
+      margin-top: flex;
       filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
       transition: transform 0.3s ease;
     }
@@ -259,8 +259,113 @@
   background: linear-gradient(to right, #00ff66, #00cc44);
 }
 
+.premios-barra {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 12px;
+  padding: 12px 20px;
+  background: #0c0c1f;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  max-width: 100%;
+  scrollbar-width: none;
+}
+
+.premios-barra::-webkit-scrollbar {
+  display: none;
+}
+
+.premio-box {
+  min-width: 140px;
+  max-width: 160px;
+  background: #1e1e2f;
+  border-radius: 12px;
+  padding: 10px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.premio-box img {
+  width: 100%;
+  max-height: 90px;
+  object-fit: contain;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  background: #111;
+}
+
+.premio-box small {
+  font-size: 14px;
+  font-weight: bold;
+  color: #00ffcc;
+  margin-top: 4px;
+}
     
 
+.prize-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  background-color: #0b0e1c;
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.prize-card {
+  width: 120px;
+  background: linear-gradient(to bottom, #111426, #0b0e1c);
+  border: 2px solid #1e233a;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  transition: transform 0.2s ease-in-out;
+}
+
+.prize-card:hover {
+  transform: scale(1.05);
+  border-color: #00ffff;
+}
+
+.prize-card img {
+  width: 100%;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  background-color: #1a1d2f;
+}
+
+.prize-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 4px;
+  text-shadow: 0 0 3px #00ffff;
+}
+
+.prize-price {
+  font-size: 13px;
+  color: #ccc;
+  font-weight: bold;
+}
+
+.prize-multiplier {
+  font-size: 9px;
+  color: #7cddff;
+  font-weight: bold;
+}
 
   </style>
 </head>
@@ -281,13 +386,38 @@
     <div class="odds-segment odds-verde-forte">Profit<br><strong>18.17%</strong></div>
 </div>
 
-  <div class="premios-barra">
-  <div class="premio-box superfast" style="background: #ff4b2b;">⚡ SUPERFAST<br><small>10%</small></div>
-  <div class="premio-box brabus" style="background: #e74c3c;">📦 BRABUS<br><small>10%</small></div>
-  <div class="premio-box p150" style="background: #f0e31b;">💶 $150<br><small>40%</small></div>
-  <div class="premio-box fever" style="background: #eeea00;">FEVER KNIFE <br><small>40%</small></div>
-  <div class="premio-box gloves" style="background: #a9e757;">🧤 GLOVES<br><small>4.9%</small></div>
-  <div class="premio-box cs2" style="background: #00e08c;">👑 CS2KNIFE<br><small>1%</small></div>
+
+<div class="prize-grid">
+  <div class="prize-card">
+    <img src="superfast.png" alt="Superfast">
+    <div class="prize-name">Superfast</div>
+    <div class="prize-price">$119</div>
+  </div>
+  <div class="prize-card">
+    <img src="brabus.png" alt="Brabus">
+    <div class="prize-name">Brabus</div>
+    <div class="prize-price">$139</div>
+  </div>
+  <div class="prize-card">
+    <img src="150.png" alt="$150">
+    <div class="prize-name">$150</div>
+    <div class="prize-price">$150</div>
+  </div>
+  <div class="prize-card">
+    <img src="feverknife.jpg" alt="Fever Knife">
+    <div class="prize-name">Fever Knife</div>
+    <div class="prize-price">$269</div>
+  </div>
+  <div class="prize-card">
+    <img src="gloves.png" alt="Gloves">
+    <div class="prize-name">Gloves</div>
+    <div class="prize-price">$309</div>
+  </div>
+  <div class="prize-card">
+    <img src="cs2knife.jpg" alt="CS2 Knife">
+    <div class="prize-name">CS2 Knife</div>
+    <div class="prize-price">$459</div>
+  </div>
 </div>
 
   <button id="spinBtn">Girar Roleta</button>
@@ -308,6 +438,7 @@
     { valor: "GLOVES CASE", prob: 0.09, img: "gloves.png" },
     { valor: "CS2KNIFE", prob: 0.01, img: "cs2knife.jpg" }
   ];
+
 
     const roleta = document.getElementById("roleta");
     const resultado = document.getElementById("resultado");
@@ -430,4 +561,3 @@
 </body>
 
 </html>
-
