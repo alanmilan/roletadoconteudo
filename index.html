@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Roleta de Conteúdo</title>
+  <style>
+    body {
+      background: #070a1a;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+    .roleta-container {
+      width: 90%;
+      max-width: 900px;
+      margin: 30px auto 0 auto;
+      overflow: hidden;
+      border: 3px solid #333;
+      border-radius: 15px;
+      background: #1c1c1c;
+      position: relative;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+    .roleta {
+      display: flex;
+      position: relative;
+      transition: transform 0.5s ease;
+    }
+    .item {
+      min-width: 180px;
+      height: 180px;
+      margin: 0 10px;
+      background: #2c2f4a;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 15px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    }
+    .item img {
+      display: block;
+      max-height: 70px;
+      object-fit: contain;
+      margin-bottom: 8px;
+    }
+    .item.highlight {
+      background: #1eaf4d;
+      box-shadow: 0 0 25px #00ff99, inset 0 0 10px rgba(255, 255, 255, 0.5);
+      transform: scale(1.15);
+      transition: all 0.3s ease;
+    }
+    .roleta-pointer {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-top: 30px solid #ffcc00;
+      z-index: 10;
+    }
+    .premios-barra {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      background: #0c0c1f;
+      padding: 10px 20px;
+      border-radius: 12px;
+      margin-top: 25px;
+      max-width: 900px;
+      width: 100%;
+      box-sizing: border-box;
+      gap: 10px;
+      overflow: hidden;
+    }
+    .premio-box {
+      flex: 1;
+      font-size: 15px;
+      font-weight: bold;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+      color: #fff;
+      min-width: 0;
+      white-space: nowrap;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+    }
+    .premio-box small {
+      display: block;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+    .repick { background: #e74c3c; }
+    .p125 { background: #3498db; }
+    .p150 { background: #eead2d; }
+    .fever { background: #ffc93b; }
+    .p300 { background: #9b59b6; }
+    .cs2 { background: #00e08c; color: #000; }
+    button {
+      margin: 20px;
+      background: #00c97b;
+      color: white;
+      padding: 15px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #00e08c;
+    }
+    #resultado {
+      font-size: 24px;
+      margin-top: 20px;
+    }
+    .animado-verde {
+      color: #00ff88;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    footer {
+      margin-top: 40px;
+      padding: 20px 0;
+      color: #aaa;
+      font-size: 14px;
+    }
+    footer a {
+      color: #800080;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    .logo-roleta {
+      width: 250px;
+      margin-bottom: 25px;
+      margin-top: -45px;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+      transition: transform 0.3s ease;
+    }
+    .logo-roleta:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <img src="roletologo.png" alt="Logo Roleta do Conteúdo" class="logo-roleta" />
+  <div class="roleta-container">
+    <div class="roleta" id="roleta"></div>
+    <div class="roleta-pointer"></div>
+  </div>
+
+  <div class="premios-barra">
+    <div class="premio-box p125">⚡ SUPERFAST<br><small>0% - 10%</small></div>
+    <div class="premio-box repick">📦 BRABUS<br><small>10% - 20%</small></div>
+    <div class="premio-box p150">💶 $150 <br><small>20% - 60%</small></div>
+    <div class="premio-box fever">FEVER KNIFE <br> 🔪 <br>60% - 85%</div>
+    <div class="premio-box p125">⚡ ZEUS <br><small>85% - 95%</small></div>
+    <div class="premio-box p300">🧤 GLOVES<br><small>95% - 98.9%</small></div>
+    <div class="premio-box cs2">👑 CS2KNIFE<br><small>99% - 99.99%</small></div>
+  </div>
+
+  <button id="spinBtn">Girar Roleta</button>
+  <h2 id="resultado"></h2>
+  <p id="probReal"></p>
+
+  <audio id="tickSound" src="tick_sound.mp3" preload="auto"></audio>
+  <audio id="winSound" src="https://www.soundjay.com/button/button-3.wav" preload="auto"></audio>
+
+  <script>
+    const premios = [
+    { valor: "SUPERFAST CASE", prob: 0.10, img: "superfast.png" },
+    { valor: "CAIXA BRABUS", prob: 0.10, img: "brabus.png" },
+    { valor: 150, prob: 0.40, img: "150.png" },
+    { valor: "FEVER KNIFE", prob: 0.25, img: "feverknife.jpg" },
+    { valor: "ZEUS CASE", prob: 0.10, img: "zeus.png" },
+    { valor: "GLOVES CASE", prob: 0.039, img: "gloves.png" },
+    { valor: "CS2KNIFE", prob: 0.0099, img: "cs2knife.jpg" }
+  ];
+
+    const roleta = document.getElementById("roleta");
+    const resultado = document.getElementById("resultado");
+    const probReal = document.getElementById("probReal");
+    const spinBtn = document.getElementById("spinBtn");
+    const tickSound = document.getElementById("tickSound");
+    const winSound = document.getElementById("winSound");
+
+    const itemFullWidth = 200;
+    let isSpinning = false;
+    let clones = [];
+
+    function escolherPremio() {
+      let r = Math.random();
+      let acumulado = 0;
+      for (let premio of premios) {
+        acumulado += premio.prob;
+        if (r < acumulado) return { premio, r };
+      }
+      return { premio: premios[premios.length - 1], r };
+    }
+
+    function gerarItens() {
+      roleta.innerHTML = "";
+      clones = [];
+      for (let i = 0; i < 100; i++) {
+        const { premio } = escolherPremio();
+        const item = document.createElement("div");
+        item.className = "item";
+        item.dataset.valor = premio.valor;
+        item.innerHTML = premio.img
+          ? `<img src="${premio.img}" /><div>${typeof premio.valor === 'number' ? `$${premio.valor}` : premio.valor}</div>`
+          : premio.emoji;
+        roleta.appendChild(item);
+        clones.push(item);
+      }
+      roleta.style.transition = "none";
+      roleta.style.transform = "translateX(0)";
+    }
+
+    function iniciarTickDuranteGiro(duracaoTotal) {
+      let lastX = null, lastTickTime = 0, lastHighlightIndex = -1;
+      const tickMin = 30, tickMax = 250;
+      const startTime = performance.now();
+      const center = roleta.parentElement.offsetWidth / 2;
+
+      function loop(now) {
+        const elapsed = now - startTime;
+        if (elapsed >= duracaoTotal - 500) return;
+        const matrix = new DOMMatrix(getComputedStyle(roleta).transform);
+        const currentX = matrix.m41;
+
+        if (lastX !== null) {
+          const delta = Math.abs(currentX - lastX);
+          const idealInterval = Math.max(tickMin, Math.min(tickMax, 800 / (delta + 0.1)));
+          if (now - lastTickTime > idealInterval) {
+            const visualCenter = Math.abs(currentX) + center;
+            const index = Math.floor(visualCenter / itemFullWidth);
+            if (index !== lastHighlightIndex) {
+              tickSound.pause();
+              tickSound.currentTime = 0;
+              tickSound.play();
+              lastTickTime = now;
+              lastHighlightIndex = index;
+            }
+          }
+        }
+
+        lastX = currentX;
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    }
+
+    function girarRoleta() {
+      if (isSpinning) return;
+      isSpinning = true;
+      spinBtn.disabled = true;
+      resultado.textContent = "";
+      probReal.textContent = "";
+
+      const { premio: premioFinal, r } = escolherPremio();
+      const indexAlvo = clones.findIndex((i, idx) => i.dataset.valor === String(premioFinal.valor) && idx > 40);
+      const index = indexAlvo !== -1 ? indexAlvo : 80;
+      const item = clones[index];
+      const destino = item.offsetLeft - (roleta.parentElement.offsetWidth / 2) + (itemFullWidth / 2);
+
+      roleta.style.transition = "transform 12s cubic-bezier(0.16, 1, 0.3, 1)";
+      roleta.style.transform = `translateX(-${destino}px)`;
+
+      iniciarTickDuranteGiro(12000);
+
+      setTimeout(() => {
+        clones.forEach(i => i.classList.remove("highlight"));
+        item.classList.add("highlight");
+        winSound.play();
+
+        resultado.innerHTML = `<span class="animado-verde">Você ganhou: ${typeof premioFinal.valor === 'number' ? `$${premioFinal.valor}` : premioFinal.valor}!</span>`;
+        probReal.textContent = `Probabilidade real: ${(r * 100).toFixed(2)}%`;
+        isSpinning = false;
+        spinBtn.disabled = false;
+      }, 12000);
+    }
+
+    spinBtn.addEventListener("click", () => {
+      tickSound.play().catch(() => {});
+      tickSound.pause();
+      tickSound.currentTime = 0;
+      if (isSpinning) return;
+      gerarItens();
+      setTimeout(() => girarRoleta(), 100);
+    });
+
+    gerarItens();
+  </script>
+
+</body>
+</html>
