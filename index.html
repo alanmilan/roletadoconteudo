@@ -173,28 +173,122 @@
     .zeus { background: #0099ff; }        /* Azul claro */
     .gloves { background: #a9e757; color: #000;}      /* Verde limão */
     .cs2 { background: #00e08c; color: #000; } /* Verde neon com texto preto */
+    .lucro-barra {
+  display: flex;
+  width: 90%;
+  max-width: 900px;
+  height: 35px;
+  margin-top: 30px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px #000;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+  color: #000;
+}
 
+.bloco {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 
+.vermelho {
+  background: linear-gradient(to right, #ff4b2b, #ff7e00);
+}
+.amarelo {
+  background: linear-gradient(to right, #ffcc00, #ccff33);
+}
+.verde-claro {
+  background: linear-gradient(to right, #aaff00, #00ff66);
+}
+.verde-forte {
+  background: linear-gradient(to right, #00ff66, #00cc44);
+}
+
+    .case-odds-barra {
+  display: flex;
+  width: 90%;
+  max-width: 900px;
+  height: 40px;
+  border-radius: 6px;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+  border: 1px solid #333;
+}
+
+.odds-segment {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.odds-segment strong {
+  font-size: 14px;
+  color: #000;
+}
+
+.odds-vermelho {
+  flex: 34.18;
+  background: linear-gradient(to right, #ff4b2b, #ff7e00);
+}
+
+.odds-laranja {
+  flex: 32.14;
+  background: linear-gradient(to right, #ffb347, #ccff33);
+}
+
+.odds-verde-claro {
+  flex: 15.50;
+  background: linear-gradient(to right, #aaff00, #00ff66);
+}
+
+.odds-verde-forte {
+  flex: 18.17;
+  background: linear-gradient(to right, #00ff66, #00cc44);
+}
+
+    
 
 
   </style>
 </head>
 <body>
+  
   <img src="roletologo.png" alt="Logo Roleta do Conteúdo" class="logo-roleta" />
   <div class="roleta-container">
     <div class="roleta" id="roleta"></div>
     <div class="roleta-pointer"></div>
   </div>
+  
+
+ <br>
+  <div class="case-odds-barra">
+    <div class="odds-segment odds-vermelho">0.25× - 0.5×<br><strong>34.18%</strong></div>
+    <div class="odds-segment odds-laranja">0.5× - 0.75×<br><strong>32.14%</strong></div>
+    <div class="odds-segment odds-verde-claro">0.75× - 1×<br><strong>15.50%</strong></div>
+    <div class="odds-segment odds-verde-forte">Profit<br><strong>18.17%</strong></div>
+</div>
 
   <div class="premios-barra">
-      <div class="premio-box superfast">⚡ <br>SUPERFAST<br><small>10%</small></div>
-      <div class="premio-box brabus">📦 BRABUS<br><small>10%</small></div>
-      <div class="premio-box p150">💶 $150 <br><small>40%</small></div>
-      <div class="premio-box fever">FEVER KNIFE <br> 🔪 15%</div>
-      <div class="premio-box zeus">⚡ ZEUS <br><small>10%</small></div>
-      <div class="premio-box gloves">🧤 GLOVES<br><small>4.9%</small></div>
-      <div class="premio-box cs2">👑 CS2KNIFE<br><small>1%</small></div>
-  </div>
+  <div class="premio-box superfast" style="background: #ff4b2b;">⚡ SUPERFAST<br><small>10%</small></div>
+  <div class="premio-box brabus" style="background: #e74c3c;">📦 BRABUS<br><small>10%</small></div>
+  <div class="premio-box p150" style="background: #f0e31b;">💶 $150<br><small>40%</small></div>
+  <div class="premio-box fever" style="background: #eeea00;">FEVER KNIFE <br><small>40%</small></div>
+  <div class="premio-box gloves" style="background: #a9e757;">🧤 GLOVES<br><small>4.9%</small></div>
+  <div class="premio-box cs2" style="background: #00e08c;">👑 CS2KNIFE<br><small>1%</small></div>
+</div>
 
   <button id="spinBtn">Girar Roleta</button>
   <h2 id="resultado"></h2>
@@ -203,15 +297,16 @@
   <audio id="tickSound" src="tick_sound.mp3" preload="auto"></audio>
   <audio id="winSound" src="https://www.soundjay.com/button/button-3.wav" preload="auto"></audio>
 
+
+
   <script>
-    const premios = [
+      const premios = [
     { valor: "SUPERFAST CASE", prob: 0.10, img: "superfast.png" },
     { valor: "CAIXA BRABUS", prob: 0.10, img: "brabus.png" },
     { valor: 150, prob: 0.40, img: "150.png" },
-    { valor: "FEVER KNIFE", prob: 0.25, img: "feverknife.jpg" },
-    { valor: "ZEUS CASE", prob: 0.10, img: "zeus.png" },
-    { valor: "GLOVES CASE", prob: 0.039, img: "gloves.png" },
-    { valor: "CS2KNIFE", prob: 0.0099, img: "cs2knife.jpg" }
+    { valor: "FEVER KNIFE", prob: 0.40, img: "feverknife.jpg" },
+    { valor: "GLOVES CASE", prob: 0.09, img: "gloves.png" },
+    { valor: "CS2KNIFE", prob: 0.01, img: "cs2knife.jpg" }
   ];
 
     const roleta = document.getElementById("roleta");
@@ -328,10 +423,7 @@
 
     gerarItens();
   </script>
-  <footer>
-    Feito por <a href="https://github.com/alanmilan" target="_blank" rel="noopener noreferrer">Alan Milan - ShadowSong</a>
-  </footer>
+
 </body>
 
 </html>
-
